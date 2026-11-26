@@ -136,7 +136,7 @@ function desenharTudo() {
     Plotly.newPlot("grafico-ranking", [{
         type:"bar", orientation:"h",
         x: rk.map(r=>r.media_acerto), y: rk.map(r=>r.tema),
-        text: rk.map(r=>r.media_acerto+"%"), textposition:"outside",
+        text: rk.map(r=>pct(r.media_acerto)), textposition:"outside",
         marker:{color: rk.map(r=>cor(r.media_acerto))},
         textfont:{color:"#1b1f1c", size:12}, cliponaxis:false,
         hovertemplate:"<b>%{y}</b><br>Acerto: %{x}%<extra></extra>"
@@ -148,7 +148,7 @@ function desenharTudo() {
     Plotly.newPlot("grafico-dificuldade", [{
         type:"bar",
         x: tb.map(t=>"Q"+t.questao_prova), y: tb.map(t=>t.pct_acerto),
-        text: tb.map(t=>t.pct_acerto+"%"), textposition:"none",
+        text: tb.map(t=>pct(t.pct_acerto)), textposition:"none",
         marker:{color: tb.map(t=>cor(t.pct_acerto))},
         textfont:{color:"#5d645f", size:11}, cliponaxis:false,
         hovertemplate:"<b>%{x}</b><br>Acerto: %{y}%<extra></extra>"
@@ -174,7 +174,7 @@ function desenharTudo() {
     let linhas = tabela.filter(t => t.tema.toLowerCase().includes(busca));
     let html = "<table class='tabela'><tr><th>Questão</th><th>Tema</th><th>Acerto</th><th>Discriminação</th><th>Distrator mais marcado</th></tr>";
     linhas.sort((a,b)=>a.pct_acerto-b.pct_acerto).forEach(t => {
-        html += `<tr><td>Q${t.questao_prova}</td><td>${t.tema}</td><td>${t.pct_acerto}%</td><td>${nomeDiscr(t.classif_discriminacao)}</td><td>${t.distrator} (${t.distrator_pct}%)</td></tr>`;
+        html += `<tr><td>Q${t.questao_prova}</td><td>${t.tema}</td><td>${pct(t.pct_acerto)}</td><td>${nomeDiscr(t.classif_discriminacao)}</td><td>${t.distrator} (${pct(t.distrator_pct)})</td></tr>`;
     });
     html += "</table>";
     document.getElementById("tabela-container").innerHTML = html;
@@ -186,7 +186,7 @@ function cor(v){
     return "#9bb5a4";              // facil
 }
 function layoutG(altura){
-    return { height:altura, paper_bgcolor:"rgba(0,0,0,0)", plot_bgcolor:"rgba(0,0,0,0)",
+    return { separators: ",.", height:altura, paper_bgcolor:"rgba(0,0,0,0)", plot_bgcolor:"rgba(0,0,0,0)",
         font:{family:"IBM Plex Sans, Segoe UI, sans-serif", color:"#1b1f1c", size:13},
         margin:{l:200,r:50,t:10,b:40},
         hoverlabel:{bgcolor:"#1b1f1c", bordercolor:"#1b1f1c", font:{color:"#fff", family:"IBM Plex Sans, sans-serif"}},
@@ -480,3 +480,7 @@ function baixarPDF() {
         alert("Erro ao gerar PDF: " + e.message);
     }
 }
+
+// Link direto para uma analise salva: index.html?analise=<id>
+const analiseNaUrl = new URLSearchParams(location.search).get("analise");
+if (analiseNaUrl) verAnalise(analiseNaUrl);

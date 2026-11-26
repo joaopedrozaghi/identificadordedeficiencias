@@ -148,9 +148,12 @@ def _acentuar(texto):
         return novo.capitalize() if w[0].isupper() else novo
     texto = re.sub(r"[A-Za-z\-]+", troca, texto)
     # erros de digitacao e termos fora do vocabulario da TCT
-    for errado, certo in (("discriminção", "discriminação"), ("baixa acurácia", "baixo acerto"),
+    for errado, certo in (("discriminção", "discriminação"), ("A baixa acurácia", "O baixo acerto"),
+                          ("a baixa acurácia", "o baixo acerto"), ("A alta acurácia", "O alto acerto"),
+                          ("a alta acurácia", "o alto acerto"), ("baixa acurácia", "baixo acerto"),
                           ("acurácia", "taxa de acerto"), ("Acurácia", "Taxa de acerto")):
         texto = texto.replace(errado, certo)
+    texto = texto.replace("A baixo acerto", "O baixo acerto").replace("a baixo acerto", "o baixo acerto")
     return texto
 
 def _separar_recomendacoes(recs):

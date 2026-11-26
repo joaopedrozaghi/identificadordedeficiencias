@@ -17,6 +17,3 @@ backend/historico/
 
 # Arquivos de PDF grandes (provas) - opcional
 # *.pdf
-
-# Configuracao interna do editor Kiro (steering, hooks)
-.kiro/
