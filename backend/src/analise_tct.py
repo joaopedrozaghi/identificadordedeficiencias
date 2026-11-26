@@ -11,8 +11,8 @@ def carregar_dados_curso(caminho_arq1, caminho_arq3, co_grupo):
     Carrega os microdados e filtra os alunos de um curso (CO_GRUPO).
     Retorna um DataFrame com os alunos validos (TP_PRES=555) daquele curso.
     """
-    arq1 = pd.read_csv(caminho_arq1, sep=";", encoding="latin-1", decimal=".")
-    arq3 = pd.read_csv(caminho_arq3, sep=";", encoding="latin-1", decimal=".")
+    arq1 = pd.read_csv(caminho_arq1, sep=";", encoding="latin-1", decimal=".", low_memory=False)
+    arq3 = pd.read_csv(caminho_arq3, sep=";", encoding="latin-1", decimal=".", low_memory=False)
 
     # Cursos do CO_GRUPO desejado
     codigos = arq1[arq1["CO_GRUPO"] == co_grupo]["CO_CURSO"].unique()
